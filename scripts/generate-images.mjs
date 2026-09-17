@@ -56,41 +56,97 @@ function mulberry32(seed) {
 }
 
 // ============================================================
-// 1. Home background — seigaiha (青海波), the traditional Japanese
-//    "blue ocean wave" pattern: rows of nested concentric arcs,
-//    each row overlapping the next. Built as a plain grid, not a
-//    trace of any specific print (e.g. Hokusai) — a pattern, not
-//    an illustration.
+// 1. Home background — a single line-art medallion evoking Hokusai's
+//    "The Great Wave off Kanagawa" (1831 — long public domain).
+//    An original abstracted line drawing of the composition's
+//    silhouette (the cresting wave and its claw-like foam), not a
+//    trace of the print itself, set inside a ring. One emblem, not
+//    a repeating pattern.
 // ============================================================
-function seigaihaSvg() {
-  const W = 1920;
-  const H = 1280;
-  const R = 52; // fan radius — finer grain than a bold print
-  const ARCS = 3; // concentric arcs per fan
-  const rowH = R * 0.62; // vertical overlap between rows
-  const colW = R * 2;
+function waveMedallionSvg() {
+  const S = 900;
+  const cx = 450;
+  const cy = 450;
 
-  let paths = '';
-  let row = 0;
-  for (let cy = -R; cy < H + R; cy += rowH) {
-    const offset = row % 2 === 0 ? 0 : R;
-    // One accent arc roughly every ~9th row — a hint of warmth, not a stripe.
-    const accentRow = row % 9 === 4;
-    for (let cx = -R + offset; cx < W + R; cx += colW) {
-      for (let k = ARCS; k >= 1; k--) {
-        const r = (R * k) / ARCS;
-        const outer = k === ARCS;
-        const stroke = accentRow && outer ? COLOR.ember : COLOR.navy;
-        const opacity = accentRow && outer ? 0.32 : 0.22 - (ARCS - k) * 0.045;
-        paths += `<path d="M ${(cx - r).toFixed(1)} ${cy.toFixed(1)} A ${r} ${r} 0 0 1 ${(cx + r).toFixed(1)} ${cy.toFixed(1)}" fill="none" stroke="${stroke}" stroke-width="1.1" stroke-opacity="${opacity.toFixed(2)}" />`;
-      }
-    }
-    row++;
-  }
+  // Smooth crest body — the claws are overlaid on top of this, not
+  // baked into the outline, so each hook can be shaped individually.
+  const crest = `M 120 560
+    C 130 460, 170 380, 250 330
+    C 300 300, 335 268, 355 230
+    C 395 195, 455 178, 515 195
+    C 550 206, 572 226, 570 250
+    C 548 266, 512 270, 486 254
+    C 494 292, 476 336, 440 372
+    C 396 416, 336 446, 274 462
+    C 226 474, 172 486, 120 560 Z`;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-    <rect width="${W}" height="${H}" fill="none" />
-    ${paths}
+  // One talon: an open hooked stroke from the crest edge up to a
+  // sharp curled tip — no closed loop, so it reads as a claw rather
+  // than a bubble. Placed and rotated per-instance along the crest.
+  const talon = (ax, ay, rot, scale) =>
+    `<path d="M 0 0 C 9 -7 17 -19 15 -29 C 14 -35 8 -37 2 -33"
+      transform="translate(${ax} ${ay}) rotate(${rot}) scale(${scale})"
+      stroke="${COLOR.navy}" stroke-width="${(2.4 / scale).toFixed(2)}" stroke-opacity="0.65"
+      fill="none" stroke-linecap="round" stroke-linejoin="round" />`;
+
+  const talons = [
+    talon(355, 228, -50, 1.15),
+    talon(392, 199, -25, 1.3),
+    talon(432, 182, -3, 1.35),
+    talon(474, 180, 18, 1.3),
+    talon(513, 194, 40, 1.2),
+    talon(548, 217, 60, 1.0),
+  ].join('\n    ');
+
+  // Thin contour lines inside the wave body, following the curl —
+  // Hokusai's surface striping, simplified.
+  const contours = [
+    `M 165 540 C 190 460, 235 400, 300 358 C 322 344, 340 328, 353 310`,
+    `M 205 520 C 235 450, 278 400, 335 366 C 352 356, 366 342, 377 326`,
+    `M 250 495 C 278 440, 316 400, 358 374`,
+  ];
+
+  // Smaller secondary swell, lower right, curling the opposite way.
+  const swell = `M 560 620
+    C 580 570, 620 540, 668 535
+    C 690 533, 705 522, 710 505
+    C 706 495, 696 492, 688 496
+    C 691 478, 708 474, 714 492
+    Z`;
+  const swellTalons = [talon(688, 500, 200, 0.7), talon(706, 490, 230, 0.6)].join('\n    ');
+  const swellContour = `M 585 608 C 602 574, 630 552, 664 544 C 682 540, 696 532, 702 518`;
+
+  // Foam spray — small dots scattered near the claws, one in accent.
+  const spray = [
+    [388, 172, false],
+    [420, 152, false],
+    [462, 148, false],
+    [500, 156, false],
+    [536, 178, true],
+    [330, 202, false],
+  ];
+
+  const strokeMain = `stroke="${COLOR.navy}" stroke-width="2.2" stroke-opacity="0.6" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
+  const strokeThin = `stroke="${COLOR.navy}" stroke-width="1.3" stroke-opacity="0.4" fill="none" stroke-linecap="round"`;
+
+  const contourPaths = contours.map((d) => `<path d="${d}" ${strokeThin} />`).join('\n    ');
+  const sprayDots = spray
+    .map(
+      ([x, y, accent]) =>
+        `<circle cx="${x}" cy="${y}" r="${accent ? 4.5 : 3}" fill="${accent ? COLOR.ember : COLOR.navy}" fill-opacity="${accent ? 0.75 : 0.5}" />`
+    )
+    .join('\n    ');
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
+    <circle cx="${cx}" cy="${cy}" r="410" fill="none" stroke="${COLOR.navy}" stroke-width="2" stroke-opacity="0.35" />
+    <circle cx="${cx}" cy="${cy}" r="392" fill="none" stroke="${COLOR.navy}" stroke-width="1" stroke-opacity="0.22" />
+    <path d="${crest}" ${strokeMain} />
+    ${talons}
+    ${contourPaths}
+    <path d="${swell}" ${strokeMain} />
+    ${swellTalons}
+    <path d="${swellContour}" ${strokeThin} />
+    ${sprayDots}
   </svg>`;
 }
 
@@ -158,7 +214,7 @@ function navMarkSvg() {
   </svg>`;
 }
 
-render(seigaihaSvg(), { width: 1920 }, 'home-waves.png');
+render(waveMedallionSvg(), { width: 1400 }, 'home-waves.png');
 render(ogSvg(), { width: 1200 }, 'og-cover.png');
 render(faviconSvg(), { width: 512 }, 'favicon.png');
 render(navMarkSvg(), { width: 240 }, 'nav-mark.png');

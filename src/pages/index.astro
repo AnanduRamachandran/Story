@@ -30,9 +30,17 @@ import { SITE } from '../data/site';
     position: fixed;
     inset: 0;
     z-index: -1;
-    background: url('/images/home-waves.png') center top / cover no-repeat;
-    opacity: 0.45;
+    background: url('/images/home-waves.png') right -8vw center / min(56vw, 640px) auto no-repeat;
+    opacity: 0.55;
     pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .page-bg {
+      background-position: right -30vw center;
+      background-size: 90vw auto;
+      opacity: 0.4;
+    }
   }
 
   .hero {
