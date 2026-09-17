@@ -160,22 +160,27 @@ function faviconSvg() {
 }
 
 // ============================================================
-// 4. Nav mark — abstract orbit glyph for the top-left corner
-//    (no text: a small piece of the same constellation language as
-//    the hero background — a center held in orbit by one accent)
+// 4. Nav mark — an abstract straw hat inside a thin orbit ring.
+//    Generic hat silhouette (wide brim, rounded crown, banded) —
+//    an original geometric shape, not a trace of any copyrighted
+//    character art or logo — set inside the same orbit-ring language
+//    as the hero background, so it still reads as one system.
 // ============================================================
 function navMarkSvg() {
   const S = 120;
   const cx = 60;
-  const cy = 60;
-  const ax = 96;
-  const ay = 32;
+  const cy = 62;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
-    <circle cx="${cx}" cy="${cy}" r="46" fill="none" stroke="${COLOR.navy}" stroke-width="2.5" stroke-opacity="0.55" />
-    <circle cx="${cx}" cy="${cy}" r="27" fill="none" stroke="${COLOR.navy}" stroke-width="2" stroke-opacity="0.35" />
-    <line x1="${cx}" y1="${cy}" x2="${ax}" y2="${ay}" stroke="${COLOR.navy}" stroke-width="2" stroke-opacity="0.6" />
-    <circle cx="${cx}" cy="${cy}" r="6" fill="${COLOR.cream}" />
-    <circle cx="${ax}" cy="${ay}" r="6.5" fill="${COLOR.ember}" />
+    <circle cx="${cx}" cy="${cy}" r="48" fill="none" stroke="${COLOR.navy}" stroke-width="2.5" stroke-opacity="0.4" />
+    <ellipse cx="${cx}" cy="76" rx="35" ry="8.5" fill="${COLOR.cream}" stroke="${COLOR.navyDeep}" stroke-width="1.2" stroke-opacity="0.5" />
+    <path
+      d="M 39 68 Q 39 34 60 32 Q 81 34 81 68 Z"
+      fill="${COLOR.cream}"
+      stroke="${COLOR.navyDeep}"
+      stroke-width="1.2"
+      stroke-opacity="0.5"
+    />
+    <rect x="39" y="61" width="42" height="9" fill="${COLOR.ember}" />
   </svg>`;
 }
 
