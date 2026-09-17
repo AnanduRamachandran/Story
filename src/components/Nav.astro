@@ -12,14 +12,21 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     <nav aria-label="Primary">
       <ul>
         {
-          NAV.map((item) => {
+          NAV.map((item, i) => {
             const active = path === item.href || path.startsWith(item.href + '/');
             return (
-              <li>
-                <a href={item.href} class="plain" aria-current={active ? 'page' : undefined}>
-                  {item.label}
-                </a>
-              </li>
+              <>
+                {i > 0 && (
+                  <li class="sep" aria-hidden="true">
+                    /
+                  </li>
+                )}
+                <li>
+                  <a href={item.href} class="plain" aria-current={active ? 'page' : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              </>
             );
           })
         }
@@ -46,10 +53,10 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
 
   .mark {
-    font-family: var(--font-display);
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: 1.15rem;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     text-decoration: none;
     color: var(--color-fg);
   }
@@ -60,22 +67,23 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
   nav ul {
     display: flex;
-    gap: var(--space-4);
+    align-items: baseline;
+    gap: var(--space-2);
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
+  .sep {
+    color: var(--color-fg-faint);
+  }
+
   nav a {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-family: var(--font-serif);
+    font-size: 0.92rem;
     text-decoration: none;
     color: var(--color-fg-muted);
     transition: color var(--duration-fast) var(--ease-out);
-    padding-block: 0.25rem;
-    border-bottom: 1px solid transparent;
   }
 
   nav a:hover {
@@ -84,15 +92,15 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
   nav a[aria-current='page'] {
     color: var(--color-accent);
-    border-bottom-color: var(--color-accent);
+    font-style: italic;
   }
 
   @media (max-width: 560px) {
     nav ul {
-      gap: var(--space-3);
+      gap: var(--space-1);
     }
     nav a {
-      font-size: 0.7rem;
+      font-size: 0.82rem;
     }
   }
 </style>

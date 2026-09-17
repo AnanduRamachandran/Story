@@ -2,7 +2,7 @@
 // from hand-written SVG, rasterized locally with resvg — no external
 // image-gen service, no reliance on system-installed fonts.
 import { Resvg } from '@resvg/resvg-js';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -10,10 +10,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(__dirname, '../public/images');
 mkdirSync(outDir, { recursive: true });
 
+// NOTE: this build of @resvg/resvg-js only accepts local font *paths*
+// (`fontFiles`) — there is no `fontBuffers` option, despite some docs
+// implying otherwise. Passing buffers is silently ignored (no error),
+// which will silently render everything in resvg's built-in fallback
+// font. Always verify custom-font output visually after touching this.
 const fontDir = path.resolve(__dirname, 'fonts');
-const fonts = [
-  readFileSync(path.join(fontDir, 'PlayfairDisplay.ttf')),
-  readFileSync(path.join(fontDir, 'JetBrainsMono.ttf')),
+const fontFiles = [
+  path.join(fontDir, 'Lora-Regular.ttf'),
+  path.join(fontDir, 'Lora-Bold.ttf'),
+  path.join(fontDir, 'Lora-Italic.ttf'),
 ];
 
 const COLOR = {
@@ -28,8 +34,8 @@ function render(svg, { width }, outName) {
   const resvg = new Resvg(svg, {
     font: {
       loadSystemFonts: false,
-      fontBuffers: fonts,
-      defaultFontFamily: 'Playfair Display',
+      fontFiles,
+      defaultFontFamily: 'Lora',
     },
     fitTo: { mode: 'width', value: width },
   });
@@ -133,10 +139,10 @@ function ogSvg() {
     <rect width="${W}" height="${H}" fill="${COLOR.black}" />
     <rect x="24" y="24" width="${W - 48}" height="${H - 48}" fill="none" stroke="${COLOR.navy}" stroke-width="1.5" />
     ${dots}
-    <text x="88" y="150" font-family="JetBrains Mono" font-size="22" letter-spacing="4" fill="${COLOR.ember}">AR.</text>
-    <text x="88" y="330" font-family="Playfair Display" font-weight="700" font-size="86" fill="${COLOR.cream}">Anandu</text>
-    <text x="88" y="422" font-family="Playfair Display" font-weight="700" font-size="86" fill="${COLOR.cream}">Ramachandran</text>
-    <text x="90" y="480" font-family="JetBrains Mono" font-size="21" letter-spacing="2.5" fill="${COLOR.navy}">SOFTWARE DEVELOPER · LOGOPHILE · PHILOSOPHY</text>
+    <text x="88" y="146" font-family="Lora" font-weight="700" font-size="26" fill="${COLOR.ember}">AR.</text>
+    <text x="88" y="330" font-family="Lora" font-weight="700" font-size="86" fill="${COLOR.cream}">Anandu</text>
+    <text x="88" y="422" font-family="Lora" font-weight="700" font-size="86" fill="${COLOR.cream}">Ramachandran</text>
+    <text x="90" y="480" font-family="Lora" font-style="italic" font-size="24" fill="${COLOR.navy}">Software Developer &#183; Logophile &#183; Philosophy</text>
   </svg>`;
 }
 
@@ -148,7 +154,7 @@ function faviconSvg() {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
     <rect width="${S}" height="${S}" rx="96" fill="${COLOR.black}" />
     <rect x="10" y="10" width="${S - 20}" height="${S - 20}" rx="88" fill="none" stroke="${COLOR.navy}" stroke-width="6" />
-    <text x="50%" y="61%" font-family="Playfair Display" font-weight="700" font-size="300" fill="${COLOR.cream}" text-anchor="middle">A</text>
+    <text x="50%" y="61%" font-family="Lora" font-weight="700" font-size="300" fill="${COLOR.cream}" text-anchor="middle">A</text>
     <circle cx="392" cy="392" r="26" fill="${COLOR.ember}" />
   </svg>`;
 }

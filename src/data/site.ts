@@ -4,7 +4,7 @@ export const SITE = {
   description:
     'Personal site of Anandu Ramachandran — software developer, logophile, and student of philosophy. Writing, reading, and building.',
   email: 'ananduyou@gmail.com',
-  url: 'https://ananduramachandran.com',
+  url: 'https://corazonan.com',
 };
 
 export const NAV = [

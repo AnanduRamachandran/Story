@@ -68,7 +68,7 @@ This repo ships a GitHub Actions workflow (`.github/workflows/deploy.yml`) that 
 One-time setup, after pushing this repo to GitHub as `AnanduRamachandran/Story`:
 
 1. **Repo → Settings → Pages → Build and deployment → Source**: select **GitHub Actions**.
-2. **Custom domain**: `public/CNAME` currently contains a placeholder (`ananduramachandran.com`) — update it to your real domain before (or right after) the first deploy, and set the same value under **Settings → Pages → Custom domain**.
+2. **Custom domain**: `public/CNAME` is set to `corazonan.com` — make sure the same value is set under **Settings → Pages → Custom domain**.
 3. **DNS**: point your domain at GitHub Pages —
    - Apex domain (`example.com`): four `A` records to `185.199.108.153`, `.109.153`, `.110.153`, `.111.153`.
    - `www` subdomain: a `CNAME` record to `ananduramachandran.github.io`.

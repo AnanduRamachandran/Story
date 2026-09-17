@@ -37,15 +37,19 @@ const sections = [
       height="1000"
     />
     <p class="label">Kochi, Kerala</p>
-    <h1 class="name">Anandu<br />Ramachandran</h1>
-    <ul class="tags" aria-label="What I do">
-      {SITE.tags.map((tag) => <li>{tag}</li>)}
-    </ul>
+    <h1 class="name">Anandu Ramachandran</h1>
+    <p class="subtitle">{SITE.tags.join(' · ')}</p>
+
+    <p class="statement">
+      Somewhere between writing software and reading{' '}
+      <em>too much philosophy</em>, mostly chasing good words in between.
+    </p>
+
     <p class="intro">
-      I write software for a living, collect words the way some people collect
-      records, and keep a running, mostly-losing argument with philosophy
-      about how any of us should live. This is where those three things share
-      a roof.
+      I write software for a living, collect words the way some people
+      collect records, and keep a running, mostly-losing argument with
+      philosophy about how any of us should live. This is where those three
+      things share a roof.
     </p>
   </section>
 
@@ -83,41 +87,32 @@ const sections = [
   }
 
   .name {
-    font-size: clamp(2.75rem, 8vw, 5.5rem);
-    margin: var(--space-2) 0 var(--space-4);
-    letter-spacing: -0.01em;
+    font-size: clamp(2.5rem, 6.5vw, 4rem);
+    margin: var(--space-2) 0 var(--space-2);
+    letter-spacing: -0.005em;
+    max-width: 18ch;
   }
 
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-4);
-    list-style: none;
+  .subtitle {
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--color-fg-muted);
+    margin: 0 0 var(--space-6);
+  }
+
+  .statement {
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    line-height: 1.35;
     margin: 0 0 var(--space-5);
-    padding: 0;
-  }
-
-  .tags li {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-fg);
-    padding: 0.35rem 0.75rem;
-    border: 1px solid var(--color-border-strong);
-    border-radius: 999px;
-  }
-
-  .tags li:nth-child(2) {
-    color: var(--color-accent);
-    border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border-strong));
+    max-width: 26ch;
+    text-wrap: balance;
   }
 
   .intro {
-    font-size: 1.2rem;
+    font-size: 1.08rem;
     line-height: 1.7;
     color: var(--color-fg-muted);
-    max-width: 42ch;
+    max-width: 46ch;
   }
 
   .index-grid {
@@ -150,14 +145,14 @@ const sections = [
   }
 
   .index-title {
-    font-family: var(--font-display);
+    font-family: var(--font-serif);
     font-size: 1.4rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-fg);
   }
 
   .index-arrow {
-    font-family: var(--font-mono);
+    font-style: italic;
     color: var(--color-accent);
     transition: transform var(--duration-med) var(--ease-out);
   }
