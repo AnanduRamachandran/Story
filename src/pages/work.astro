@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { experience, achievements, education, skills } from '../data/work';
+import { experience } from '../data/work';
 ---
 
 <BaseLayout title="Work" description="Where I've worked and what I've built.">
@@ -24,60 +24,13 @@ import { experience, achievements, education, skills } from '../data/work';
                   <h3>{role.title}</h3>
                   <span class="label role-period">{role.period}</span>
                 </div>
-                <ul class="prose">
-                  {role.points.map((p) => (
-                    <li>{p}</li>
-                  ))}
-                </ul>
+                <p class="role-summary">{role.summary}</p>
               </div>
             ))}
           </div>
         </div>
       ))
     }
-  </section>
-
-  <hr class="wrap rule" />
-
-  <section class="wrap block two-col">
-    <div>
-      <h2 class="label section-title">Achievements</h2>
-      <ul class="plain-list">
-        {
-          achievements.map((a) => (
-            <li>
-              <span class="item-title">{a.title}</span>
-              {a.meta && <span class="label item-meta">{a.meta}</span>}
-              <p>{a.description}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-
-    <div>
-      <h2 class="label section-title">Education</h2>
-      <ul class="plain-list">
-        {
-          education.map((e) => (
-            <li>
-              <span class="item-title">{e.school}</span>
-              <span class="label item-meta">{e.period}</span>
-              <p>{e.credential}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <hr class="wrap rule" />
-
-  <section class="wrap block skills-block">
-    <h2 class="label section-title">Skills</h2>
-    <ul class="skills">
-      {skills.map((s) => <li>{s}</li>)}
-    </ul>
   </section>
 </BaseLayout>
 
@@ -87,7 +40,7 @@ import { experience, achievements, education, skills } from '../data/work';
   }
 
   .block {
-    padding-block: var(--space-5);
+    padding-block: var(--space-5) var(--space-8);
   }
 
   .org + .org {
@@ -125,83 +78,9 @@ import { experience, achievements, education, skills } from '../data/work';
     font-size: 1.1rem;
   }
 
-  .role ul {
+  .role-summary {
     margin: 0;
-    padding-left: 1.1em;
     color: var(--color-fg-muted);
-  }
-
-  .role li {
-    margin-bottom: var(--space-1);
-  }
-
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-6);
-  }
-
-  .section-title {
-    margin-bottom: var(--space-3);
-  }
-
-  .plain-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .plain-list li {
-    padding-block: var(--space-3);
-    border-top: 1px solid var(--color-border);
-  }
-
-  .plain-list li:last-child {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .item-title {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    color: var(--color-fg);
-    margin-right: var(--space-2);
-  }
-
-  .item-meta {
-    color: var(--color-fg-faint);
-  }
-
-  .plain-list p {
-    margin: var(--space-1) 0 0;
-    color: var(--color-fg-muted);
-    max-width: 56ch;
-  }
-
-  .skills-block {
-    padding-bottom: var(--space-5);
-  }
-
-  .skills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .skills li {
-    font-style: italic;
-    font-size: 0.88rem;
-    color: var(--color-fg-muted);
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-    padding: 0.3rem 0.6rem;
-  }
-
-  @media (max-width: 640px) {
-    .two-col {
-      grid-template-columns: 1fr;
-    }
+    max-width: 60ch;
   }
 </style>

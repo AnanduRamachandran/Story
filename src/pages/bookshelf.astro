@@ -25,9 +25,11 @@ const read = books.filter((b) => b.status === 'read');
             {reading.map((b) => (
               <li>
                 <span class="dot dot-reading" aria-hidden="true" />
-                <span class="book-title">{b.title}</span>
-                <span class="book-author">{b.author}</span>
-                {b.note && <span class="book-note">{b.note}</span>}
+                <span class="book-content">
+                  <span class="book-title">{b.title}</span>
+                  <span class="book-author">{b.author}</span>
+                  {b.note && <span class="book-note">{b.note}</span>}
+                </span>
               </li>
             ))}
           </ul>
@@ -43,9 +45,11 @@ const read = books.filter((b) => b.status === 'read');
             {read.map((b) => (
               <li>
                 <span class="dot" aria-hidden="true" />
-                <span class="book-title">{b.title}</span>
-                <span class="book-author">{b.author}</span>
-                {b.note && <span class="book-note">{b.note}</span>}
+                <span class="book-content">
+                  <span class="book-title">{b.title}</span>
+                  <span class="book-author">{b.author}</span>
+                  {b.note && <span class="book-note">{b.note}</span>}
+                </span>
               </li>
             ))}
           </ul>
@@ -85,21 +89,28 @@ const read = books.filter((b) => b.status === 'read');
   }
 
   .book-list li {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.15em 0.6em;
-    padding-block: var(--space-2);
+    display: grid;
+    grid-template-columns: 12px 1fr;
+    column-gap: 0.55em;
+    padding-block: 0.55rem;
     border-bottom: 1px solid var(--color-border);
   }
 
   .dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
+    margin-top: 0.55em;
     border-radius: 50%;
     background: var(--color-fg-faint);
-    align-self: center;
-    flex-shrink: 0;
+    justify-self: center;
+  }
+
+  .book-content {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.1em 0.5em;
+    font-size: 0.88rem;
   }
 
   .dot-reading {
@@ -124,10 +135,9 @@ const read = books.filter((b) => b.status === 'read');
 
   .book-note {
     font-style: italic;
-    font-size: 0.82rem;
+    font-size: 0.75rem;
     color: var(--color-fg-faint);
     width: 100%;
-    padding-left: 1.15em;
   }
 
   .empty {
