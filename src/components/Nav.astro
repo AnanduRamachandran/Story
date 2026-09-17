@@ -6,7 +6,9 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <img class="mark" src="/images/nav-mark.png" alt={SITE.name} width="120" height="120" />
+    <a href="/" class="mark-link plain" aria-label={`${SITE.name} — home`} aria-current={path === '/' ? 'page' : undefined}>
+      <img class="mark" src="/images/nav-mark.png" alt="" width="120" height="120" />
+    </a>
     <nav aria-label="Primary">
       <ul>
         {
@@ -50,11 +52,21 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     padding-block: var(--space-2);
   }
 
+  .mark-link {
+    display: block;
+    line-height: 0;
+  }
+
   .mark {
     height: 1.6rem;
     width: 1.6rem;
     display: block;
     opacity: 0.85;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .mark-link:hover .mark {
+    opacity: 1;
   }
 
   nav ul {
