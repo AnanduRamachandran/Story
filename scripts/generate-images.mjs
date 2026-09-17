@@ -159,6 +159,20 @@ function faviconSvg() {
   </svg>`;
 }
 
+// ============================================================
+// 4. Nav mark — small wordmark for the top-left corner, transparent bg
+// ============================================================
+function navMarkSvg() {
+  const W = 184;
+  const H = 120;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+    <circle cx="60" cy="58" r="50" fill="none" stroke="${COLOR.navy}" stroke-width="3.5" stroke-opacity="0.65" />
+    <text x="30" y="80" font-family="Lora" font-weight="700" font-size="60" fill="${COLOR.cream}">AR</text>
+    <circle cx="164" cy="80" r="8" fill="${COLOR.ember}" />
+  </svg>`;
+}
+
 render(heroSvg(), { width: 1600 }, 'hero-field.png');
 render(ogSvg(), { width: 1200 }, 'og-cover.png');
 render(faviconSvg(), { width: 512 }, 'favicon.png');
+render(navMarkSvg(), { width: 368 }, 'nav-mark.png');

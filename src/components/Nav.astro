@@ -6,9 +6,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <a href="/" class="mark plain" aria-label={`${SITE.name} — home`}>
-      AR<span aria-hidden="true">.</span>
-    </a>
+    <img class="mark" src="/images/nav-mark.png" alt={SITE.name} width="184" height="120" />
     <nav aria-label="Primary">
       <ul>
         {
@@ -18,7 +16,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
               <>
                 {i > 0 && (
                   <li class="sep" aria-hidden="true">
-                    /
+                    &middot;
                   </li>
                 )}
                 <li>
@@ -49,33 +47,28 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-block: var(--space-3);
+    padding-block: var(--space-2);
   }
 
   .mark {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: 1.15rem;
-    letter-spacing: 0.01em;
-    text-decoration: none;
-    color: var(--color-fg);
-  }
-
-  .mark span {
-    color: var(--color-accent);
+    height: 2.1rem;
+    width: auto;
+    display: block;
   }
 
   nav ul {
     display: flex;
     align-items: baseline;
-    gap: var(--space-2);
+    gap: var(--space-3);
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
   .sep {
-    color: var(--color-fg-faint);
+    color: var(--color-border-strong);
+    font-size: 0.7rem;
+    transform: translateY(-0.35em);
   }
 
   nav a {
@@ -96,8 +89,11 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
 
   @media (max-width: 560px) {
+    .mark {
+      height: 1.7rem;
+    }
     nav ul {
-      gap: var(--space-1);
+      gap: var(--space-2);
     }
     nav a {
       font-size: 0.82rem;
