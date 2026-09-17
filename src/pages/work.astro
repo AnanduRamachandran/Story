@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { experience, achievements, education, skills } from '../data/work';
+---
+
+<BaseLayout title="Work" description="Where I've worked and what I've built.">
+  <section class="wrap page-head">
+    <p class="label">Career</p>
+    <h1>Work</h1>
+  </section>
+
+  <section class="wrap block">
+    {
+      experience.map((entry) => (
+        <div class="org">
+          <div class="org-head">
+            <h2>{entry.org}</h2>
+            <span class="label">{entry.location}</span>
+          </div>
+          <div class="roles">
+            {entry.roles.map((role) => (
+              <div class="role">
+                <div class="role-head">
+                  <h3>{role.title}</h3>
+                  <span class="label role-period">{role.period}</span>
+                </div>
+                <ul class="prose">
+                  {role.points.map((p) => (
+                    <li>{p}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </section>
+
+  <hr class="wrap rule" />
+
+  <section class="wrap block two-col">
+    <div>
+      <h2 class="label section-title">Achievements</h2>
+      <ul class="plain-list">
+        {
+          achievements.map((a) => (
+            <li>
+              <span class="item-title">{a.title}</span>
+              {a.meta && <span class="label item-meta">{a.meta}</span>}
+              <p>{a.description}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="label section-title">Education</h2>
+      <ul class="plain-list">
+        {
+          education.map((e) => (
+            <li>
+              <span class="item-title">{e.school}</span>
+              <span class="label item-meta">{e.period}</span>
+              <p>{e.credential}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <hr class="wrap rule" />
+
+  <section class="wrap block skills-block">
+    <h2 class="label section-title">Skills</h2>
+    <ul class="skills">
+      {skills.map((s) => <li>{s}</li>)}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-top: var(--space-7);
+  }
+
+  .block {
+    padding-block: var(--space-5);
+  }
+
+  .org + .org {
+    margin-top: var(--space-6);
+  }
+
+  .org-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .org-head h2 {
+    margin: 0;
+  }
+
+  .role + .role {
+    margin-top: var(--space-5);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .role-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .role-head h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .role ul {
+    margin: 0;
+    padding-left: 1.1em;
+    color: var(--color-fg-muted);
+  }
+
+  .role li {
+    margin-bottom: var(--space-1);
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+
+  .section-title {
+    margin-bottom: var(--space-3);
+  }
+
+  .plain-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .plain-list li {
+    padding-block: var(--space-3);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .plain-list li:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .item-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-fg);
+    margin-right: var(--space-2);
+  }
+
+  .item-meta {
+    color: var(--color-fg-faint);
+  }
+
+  .plain-list p {
+    margin: var(--space-1) 0 0;
+    color: var(--color-fg-muted);
+    max-width: 56ch;
+  }
+
+  .skills-block {
+    padding-bottom: var(--space-5);
+  }
+
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .skills li {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-fg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+  }
+
+  @media (max-width: 640px) {
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

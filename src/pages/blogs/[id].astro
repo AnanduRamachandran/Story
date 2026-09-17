@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="wrap post">
+    <a class="plain back label" href="/blogs">&larr; Blogs</a>
+    <p class="label post-date">{dateFmt(post.data.date)}</p>
+    <h1>{post.data.title}</h1>
+    {
+      post.data.tags.length > 0 && (
+        <ul class="tag-list">
+          {post.data.tags.map((t: string) => (
+            <li>{t}</li>
+          ))}
+        </ul>
+      )
+    }
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    padding-block: var(--space-7) var(--space-8);
+  }
+
+  .back {
+    display: inline-block;
+    color: var(--color-fg-muted);
+    text-decoration: none;
+    margin-bottom: var(--space-4);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .back:hover {
+    color: var(--color-accent);
+  }
+
+  .post-date {
+    margin-bottom: var(--space-2);
+  }
+
+  h1 {
+    max-width: 20ch;
+  }
+
+  .tag-list {
+    display: flex;
+    gap: var(--space-2);
+    list-style: none;
+    margin: var(--space-3) 0 var(--space-6);
+    padding: 0;
+  }
+
+  .tag-list li {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 45%, var(--color-border-strong));
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+  }
+</style>

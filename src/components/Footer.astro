@@ -1,0 +1,35 @@
+---
+import { SITE } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p class="label">&copy; {year} {SITE.name}</p>
+    <a class="plain label" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-8);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: space-between;
+    padding-block: var(--space-5);
+  }
+
+  .footer-inner a {
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .footer-inner a:hover {
+    color: var(--color-accent);
+  }
+</style>

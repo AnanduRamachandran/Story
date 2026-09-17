@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const dateFmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<BaseLayout title="Blogs" description="Notes and essays on software and whatever else.">
+  <section class="wrap page-head">
+    <p class="label">Writing</p>
+    <h1>Blogs</h1>
+    <p class="prose page-desc">
+      Half software, half whatever I was reading that week. New posts land
+      here as they're written.
+    </p>
+  </section>
+
+  <section class="wrap post-list">
+    {
+      posts.length === 0 ? (
+        <p class="empty">Nothing published yet — first post is on its way.</p>
+      ) : (
+        posts.map((post) => (
+          <a class="post-row plain" href={`/blogs/${post.id}`}>
+            <span class="post-date label">{dateFmt(post.data.date)}</span>
+            <span class="post-body">
+              <span class="post-title">{post.data.title}</span>
+              <span class="post-desc">{post.data.description}</span>
+            </span>
+          </a>
+        ))
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-top: var(--space-7);
+  }
+
+  .page-desc {
+    color: var(--color-fg-muted);
+  }
+
+  .post-list {
+    padding-bottom: var(--space-5);
+  }
+
+  .post-row {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    text-decoration: none;
+  }
+
+  .post-list a:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .post-date {
+    padding-top: 0.2rem;
+    color: var(--color-fg-faint);
+  }
+
+  .post-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .post-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-fg);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .post-row:hover .post-title {
+    color: var(--color-accent);
+  }
+
+  .post-desc {
+    color: var(--color-fg-muted);
+    max-width: 60ch;
+  }
+
+  .empty {
+    color: var(--color-fg-muted);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 560px) {
+    .post-row {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+  }
+</style>
