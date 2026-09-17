@@ -1,15 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { books } from '../data/bookshelf';
-
-const reading = books.filter((b) => b.status === 'reading');
-const read = books.filter((b) => b.status === 'read');
 ---
 
 <BaseLayout title="Bookshelf" description="A running list of what I'm reading and have read.">
   <section class="wrap page-head">
     <p class="label">Reading</p>
     <h1>Bookshelf</h1>
+    <blockquote class="quote">
+      “One glance at a book and you hear the voice of another person,
+      perhaps someone dead for 1,000 years. To read is to voyage through
+      time.”
+      <cite>— Carl Sagan</cite>
+    </blockquote>
     <p class="prose page-desc">
       A plain list, not a review site. I add to it as I go — no ratings, no
       pretense of finishing everything I start.
@@ -18,46 +21,23 @@ const read = books.filter((b) => b.status === 'read');
 
   <section class="wrap shelves">
     {
-      reading.length > 0 && (
-        <div class="shelf">
-          <h2 class="label shelf-title">Currently reading</h2>
-          <ul class="book-list">
-            {reading.map((b) => (
-              <li>
-                <span class="dot dot-reading" aria-hidden="true" />
-                <span class="book-content">
-                  <span class="book-title">{b.title}</span>
-                  <span class="book-author">{b.author}</span>
-                  {b.note && <span class="book-note">{b.note}</span>}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      books.length > 0 ? (
+        <ul class="book-list">
+          {books.map((b) => (
+            <li>
+              <span class={`dot ${b.status === 'reading' ? 'dot-reading' : ''}`} aria-hidden="true" />
+              <span class="book-content">
+                <span class="book-title">{b.title}</span>
+                <span class="book-author">{b.author}</span>
+                {b.note && <span class="book-note">{b.note}</span>}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="empty">Nothing on the shelf yet.</p>
       )
     }
-
-    {
-      read.length > 0 && (
-        <div class="shelf">
-          <h2 class="label shelf-title">Read</h2>
-          <ul class="book-list">
-            {read.map((b) => (
-              <li>
-                <span class="dot" aria-hidden="true" />
-                <span class="book-content">
-                  <span class="book-title">{b.title}</span>
-                  <span class="book-author">{b.author}</span>
-                  {b.note && <span class="book-note">{b.note}</span>}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
-
-    {books.length === 0 && <p class="empty">Nothing on the shelf yet.</p>}
   </section>
 </BaseLayout>
 
@@ -66,19 +46,32 @@ const read = books.filter((b) => b.status === 'read');
     padding-top: var(--space-7);
   }
 
+  .quote {
+    margin: var(--space-4) 0;
+    padding: 0;
+    border: none;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+    line-height: 1.45;
+    color: var(--color-fg);
+    max-width: 46ch;
+  }
+
+  .quote cite {
+    display: block;
+    margin-top: var(--space-2);
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--color-fg-faint);
+  }
+
   .page-desc {
     color: var(--color-fg-muted);
   }
 
   .shelves {
     padding-bottom: var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-  }
-
-  .shelf-title {
-    margin-bottom: var(--space-3);
   }
 
   .book-list {
