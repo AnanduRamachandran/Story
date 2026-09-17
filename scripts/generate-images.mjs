@@ -56,67 +56,41 @@ function mulberry32(seed) {
 }
 
 // ============================================================
-// 1. Hero background — sparse constellation / contour field
+// 1. Home background — seigaiha (青海波), the traditional Japanese
+//    "blue ocean wave" pattern: rows of nested concentric arcs,
+//    each row overlapping the next. Built as a plain grid, not a
+//    trace of any specific print (e.g. Hokusai) — a pattern, not
+//    an illustration.
 // ============================================================
-function heroSvg() {
-  const rand = mulberry32(2409);
-  const W = 1600;
-  const H = 1000;
-  const N = 64;
-  const nodes = Array.from({ length: N }, () => ({
-    x: rand() * W,
-    y: rand() * H * 0.9 + H * 0.05,
-    r: rand() * 1.4 + 0.9,
-    accent: rand() > 0.9,
-  }));
+function seigaihaSvg() {
+  const W = 1920;
+  const H = 1280;
+  const R = 52; // fan radius — finer grain than a bold print
+  const ARCS = 3; // concentric arcs per fan
+  const rowH = R * 0.62; // vertical overlap between rows
+  const colW = R * 2;
 
-  // Connect each node to its single nearest neighbor (within range) —
-  // produces sparse, tree-like constellations instead of closed polygons.
-  let lines = '';
-  for (let i = 0; i < nodes.length; i++) {
-    const a = nodes[i];
-    let best = -1;
-    let bestD = 190;
-    for (let j = 0; j < nodes.length; j++) {
-      if (i === j) continue;
-      const b = nodes[j];
-      const d = Math.hypot(a.x - b.x, a.y - b.y);
-      if (d < bestD) {
-        bestD = d;
-        best = j;
+  let paths = '';
+  let row = 0;
+  for (let cy = -R; cy < H + R; cy += rowH) {
+    const offset = row % 2 === 0 ? 0 : R;
+    // One accent arc roughly every ~9th row — a hint of warmth, not a stripe.
+    const accentRow = row % 9 === 4;
+    for (let cx = -R + offset; cx < W + R; cx += colW) {
+      for (let k = ARCS; k >= 1; k--) {
+        const r = (R * k) / ARCS;
+        const outer = k === ARCS;
+        const stroke = accentRow && outer ? COLOR.ember : COLOR.navy;
+        const opacity = accentRow && outer ? 0.32 : 0.22 - (ARCS - k) * 0.045;
+        paths += `<path d="M ${(cx - r).toFixed(1)} ${cy.toFixed(1)} A ${r} ${r} 0 0 1 ${(cx + r).toFixed(1)} ${cy.toFixed(1)}" fill="none" stroke="${stroke}" stroke-width="1.1" stroke-opacity="${opacity.toFixed(2)}" />`;
       }
     }
-    if (best !== -1 && rand() > 0.35) {
-      const b = nodes[best];
-      lines += `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="${COLOR.navy}" stroke-width="1" stroke-opacity="${(0.16 + rand() * 0.16).toFixed(2)}" />`;
-    }
-  }
-
-  let dots = '';
-  for (const n of nodes) {
-    const fill = n.accent ? COLOR.ember : COLOR.navy;
-    const opacity = n.accent ? 0.85 : 0.55;
-    dots += `<circle cx="${n.x.toFixed(1)}" cy="${n.y.toFixed(1)}" r="${(n.accent ? n.r + 1.4 : n.r).toFixed(1)}" fill="${fill}" fill-opacity="${opacity}" />`;
-  }
-
-  // a few faint orbit arcs for structure
-  let arcs = '';
-  const arcCenters = [
-    { cx: W * 0.82, cy: H * 0.28 },
-    { cx: W * 0.15, cy: H * 0.78 },
-  ];
-  for (const c of arcCenters) {
-    for (let k = 0; k < 3; k++) {
-      const r = 60 + k * 46;
-      arcs += `<circle cx="${c.cx}" cy="${c.cy}" r="${r}" fill="none" stroke="${COLOR.navy}" stroke-width="1" stroke-opacity="${(0.22 - k * 0.05).toFixed(2)}" />`;
-    }
+    row++;
   }
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
     <rect width="${W}" height="${H}" fill="none" />
-    ${arcs}
-    ${lines}
-    ${dots}
+    ${paths}
   </svg>`;
 }
 
@@ -184,7 +158,7 @@ function navMarkSvg() {
   </svg>`;
 }
 
-render(heroSvg(), { width: 1600 }, 'hero-field.png');
+render(seigaihaSvg(), { width: 1920 }, 'home-waves.png');
 render(ogSvg(), { width: 1200 }, 'og-cover.png');
 render(faviconSvg(), { width: 512 }, 'favicon.png');
 render(navMarkSvg(), { width: 240 }, 'nav-mark.png');
