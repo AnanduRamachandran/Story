@@ -190,21 +190,21 @@ function faviconSvg() {
 }
 
 // ============================================================
-// 4. Nav mark — a simple home/house glyph inside a thin orbit ring,
-//    since the mark now links back to "/". Same construction as the
-//    rest of the mark set: cream fill, thin navy edge, one ember
-//    accent, set inside the same ring language as the favicon and
-//    the hero medallion, so it reads as part of one system.
+// 4. Nav mark — an outline home glyph inside a thin orbit ring,
+//    since the mark now links back to "/". Open stroked lines, not
+//    filled shapes, matching the line-art language used everywhere
+//    else on the site (the wave medallion, the ring itself) — just
+//    one filled ember accent for the door.
 // ============================================================
 function navMarkSvg() {
   const S = 120;
   const cx = 60;
   const cy = 62;
-  const edge = `stroke="${COLOR.navyDeep}" stroke-width="1.2" stroke-opacity="0.5"`;
+  const line = `fill="none" stroke="${COLOR.cream}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
     <circle cx="${cx}" cy="${cy}" r="48" fill="none" stroke="${COLOR.navy}" stroke-width="2.5" stroke-opacity="0.4" />
-    <path d="M 60 34 L 91 63 L 29 63 Z" fill="${COLOR.cream}" ${edge} stroke-linejoin="round" />
-    <rect x="38" y="63" width="44" height="29" fill="${COLOR.cream}" ${edge} />
+    <path d="M 28 64 L 60 34 L 92 64" ${line} />
+    <path d="M 36 63 L 36 92 L 84 92 L 84 63" ${line} />
     <rect x="52" y="76" width="16" height="16" fill="${COLOR.ember}" />
   </svg>`;
 }
