@@ -9,8 +9,8 @@ import { books } from '../data/bookshelf';
     <h1>Bookshelf</h1>
     <blockquote class="quote">
       “One glance at a book and you hear the voice of another person,
-      perhaps someone dead for 1,000 years. To read is to voyage through
-      time.”
+      perhaps someone dead for 1,000 years.{' '}
+      <span class="accent">To read is to voyage through time.</span>”
       <cite>— Carl Sagan</cite>
     </blockquote>
     <p class="prose page-desc">
@@ -64,6 +64,10 @@ import { books } from '../data/bookshelf';
     font-style: normal;
     font-size: 0.85rem;
     color: var(--color-fg-faint);
+  }
+
+  .quote .accent {
+    color: var(--color-accent);
   }
 
   .page-desc {
