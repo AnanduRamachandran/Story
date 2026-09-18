@@ -15,7 +15,8 @@ import { books } from '../data/bookshelf';
     </blockquote>
     <p class="prose page-desc">
       A plain list, not a review site. I add to it as I go — no ratings, no
-      pretense of finishing everything I start.
+      pretense of finishing everything I start. A hollow dot marks what I'm
+      still reading.
     </p>
   </section>
 
@@ -94,6 +95,7 @@ import { books } from '../data/bookshelf';
   }
 
   .dot {
+    box-sizing: border-box;
     width: 5px;
     height: 5px;
     margin-top: 0.55em;
@@ -111,8 +113,8 @@ import { books } from '../data/bookshelf';
   }
 
   .dot-reading {
-    background: var(--color-accent);
-    box-shadow: 0 0 6px color-mix(in srgb, var(--color-accent) 70%, transparent);
+    background: transparent;
+    border: 1px solid var(--color-fg-faint);
   }
 
   .book-title {
