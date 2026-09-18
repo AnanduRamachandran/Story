@@ -25,7 +25,15 @@ Before treating any visual change as done: run `npm run build` (catches type/con
 ## Design system is locked
 
 - **One serif family** (Lora) for everything — headings, body, nav, labels. Hierarchy comes from weight/italic/size/color, not from adding another typeface. `JetBrains Mono` exists only for inline `<code>` in blog posts.
-- **Four-color palette**, fixed: `--color-black`, `--color-navy-deep`, `--color-navy`, `--color-ember` (defined in `src/styles/global.css`). Don't introduce new colors — remix these via `color-mix()` if you need a new tone.
+- **Four-color palette**, fixed: `--color-black` (`#000000`), `--color-navy-deep` (`#0b192c`), `--color-navy` (`#1e3e62`), `--color-ember` (`#ff6500`) (defined in `src/styles/global.css`). Don't introduce new colors — remix these via `color-mix()` if you need a new tone.
+- Everything else is a **semantic token derived from those four** via `color-mix()`, not a new color:
+  - `--color-bg` — page background, = `--color-black`.
+  - `--color-page-shell` — the grey shown around the boxed page on wide viewports (`color-mix(fg 10%, black)`), forced back to `--color-bg` below 560px so phones stay pure black.
+  - `--color-surface` / `--color-surface-raised` — navy-deep-based, for any raised/card-like area.
+  - `--color-border` / `--color-border-strong` — navy-based hairlines (nav/footer borders use a separate fg-based mix instead, see below).
+  - `--color-fg` (`#f4f1ea`, cream) — primary text. `--color-fg-muted` (62% mix) and `--color-fg-faint` (45% mix, tuned to clear WCAG AA 4.5:1 against black) are dimmer steps for secondary/tertiary text.
+  - `--color-accent` / `--color-accent-on` / `--color-focus-ring` — all = `--color-ember`, used for the active nav link, hover states, and the one focus-ring style.
+  - The nav and footer hairlines intentionally use `color-mix(fg 15%, transparent)` inline rather than `--color-border`, for a subtle off-white line instead of a navy-tinted one — see [Nav.astro](src/components/Nav.astro) / [Footer.astro](src/components/Footer.astro).
 - Don't add a new typeface, a new accent color, or a component library without the user explicitly asking — this has been an explicit, repeated design direction across the project's history, not an oversight.
 
 ## Generated image assets
