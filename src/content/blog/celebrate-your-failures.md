@@ -2,7 +2,6 @@
 title: "Celebrate Your Failures"
 description: "On a culture that stigmatizes failure, and why falling down is how anyone actually grows."
 date: 2020-05-05
-tags: ["life"]
 ---
 
 _"It is impossible to live without failing at something, unless you live so cautiously that you might as well not have lived at all, in which case you have failed by default." — J.K. Rowling_

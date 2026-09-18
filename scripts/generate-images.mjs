@@ -84,15 +84,16 @@ function ogSvg() {
 }
 
 // ============================================================
-// 2. Favicon — 512x512 monogram
+// 2. Favicon — 512x512 wave-curl glyph. Transparent canvas, a
+//    single open stroke (no fills, no letters) echoing the
+//    Hokusai wave on the home page — legible as a small accent
+//    mark rather than a monogram.
 // ============================================================
 function faviconSvg() {
   const S = 512;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
-    <rect width="${S}" height="${S}" rx="96" fill="${COLOR.black}" />
-    <rect x="10" y="10" width="${S - 20}" height="${S - 20}" rx="88" fill="none" stroke="${COLOR.navy}" stroke-width="6" />
-    <text x="50%" y="61%" font-family="Lora" font-weight="700" font-size="300" fill="${COLOR.cream}" text-anchor="middle">A</text>
-    <circle cx="392" cy="392" r="26" fill="${COLOR.ember}" />
+    <path d="M 92 328 C 138 208 292 152 384 224 C 452 276 420 372 328 366 C 274 362 254 322 284 296"
+      fill="none" stroke="${COLOR.ember}" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" />
   </svg>`;
 }
 

@@ -15,7 +15,7 @@
   --color-border-strong: var(--color-navy);
   --color-fg: #f4f1ea;
   --color-fg-muted: color-mix(in srgb, var(--color-fg) 62%, var(--color-navy-deep));
-  --color-fg-faint: color-mix(in srgb, var(--color-fg) 38%, var(--color-navy-deep));
+  --color-fg-faint: color-mix(in srgb, var(--color-fg) 45%, var(--color-navy-deep));
   --color-accent: var(--color-ember);
   --color-accent-on: #1a0900;
   --color-focus-ring: var(--color-ember);
