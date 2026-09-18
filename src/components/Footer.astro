@@ -1,12 +1,11 @@
 ---
 import { SITE } from '../data/site';
-const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p class="label">&copy; {year} {SITE.name}</p>
-    <a class="plain label" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    <p class="quip">Say hello</p>
+    <a class="plain email" href={`mailto:${SITE.email}`}>{SITE.email}</a>
   </div>
 </footer>
 
@@ -18,18 +17,28 @@ const year = new Date().getFullYear();
 
   .footer-inner {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
     gap: var(--space-2);
-    justify-content: space-between;
-    padding-block: var(--space-5);
+    padding-block: var(--space-6);
+    text-align: center;
   }
 
-  .footer-inner a {
+  .quip {
+    font-style: italic;
+    color: var(--color-fg-muted);
+    margin: 0;
+  }
+
+  .email {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-fg);
     text-decoration: none;
     transition: color var(--duration-fast) var(--ease-out);
   }
 
-  .footer-inner a:hover {
+  .email:hover {
     color: var(--color-accent);
   }
 </style>

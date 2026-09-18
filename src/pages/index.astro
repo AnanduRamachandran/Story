@@ -4,52 +4,89 @@ import { SITE } from '../data/site';
 ---
 
 <BaseLayout title={SITE.name}>
-  <div class="page-bg" aria-hidden="true"></div>
-
   <section class="hero wrap">
-    <p class="label">Kochi, Kerala</p>
     <h1 class="name">Anandu Ramachandran</h1>
     <p class="subtitle">{SITE.tags.join(' · ')}</p>
 
     <p class="statement">
-      Somewhere between writing software and reading{' '}
-      <em>too much philosophy</em>, mostly chasing good words in between.
+      Somewhere between learning technology, reading{' '}
+      <em>too much history</em>, and chasing philosophical rabbit holes
+      online, mostly looking for good ideas in between.
     </p>
 
-    <p class="intro">
-      I write software for a living, collect words the way some people
-      collect records, and keep a running, mostly-losing argument with
-      philosophy about how any of us should live. This is where those three
-      things share a roof.
-    </p>
+    <div class="intro">
+      <p>Hey, I’m Anandu.</p>
+
+      <p>
+        I’m a software developer who enjoys being around technology and
+        learning how things work. It’s something I’ve always wanted to build
+        my life around, and I still enjoy discovering new ideas, solving
+        problems, and figuring out how to make things work a little better.
+      </p>
+
+      <p>
+        Outside of work, I’m usually somewhere between a book, a movie, or an
+        unnecessarily long rabbit hole about history and philosophy. I love
+        reading and getting completely absorbed in a good book. I also really
+        enjoy movies. A genuinely good movie can make my day a lot better,
+        even if the day wasn’t going particularly well to begin with.
+      </p>
+
+      <p>
+        I’m also a huge anime fan, with One Piece holding a particularly
+        special place in my heart. There’s something about getting invested
+        in a story and its characters over hundreds of episodes that I really
+        love. And yes, I will probably talk about One Piece if you give me
+        the opportunity.
+      </p>
+
+      <p>
+        I love travelling too, especially the idea of experiencing different
+        cultures, food, people, and ways of life. I don’t get to travel
+        nearly as often as I’d like, but it’s something I hope to do a lot
+        more of.
+      </p>
+
+      <p>
+        The idea for this website actually came from one of my college
+        seniors. He once described his own website as “a selfish pursuit of
+        storing and curating knowledge”, a place to collect his ideas and the
+        things he found interesting or inspiring. He also described it as a
+        living record of his learnings, built on the idea that we change as
+        we continue to learn new things.
+      </p>
+
+      <p>
+        That idea stuck with me. A lot of the elements and the overall feel
+        of this site are inspired by his work, so I owe him credit for giving
+        me the idea to start this in the first place. This is my own version
+        of that idea, a place where I can keep track of the things I read,
+        learn, think about, and find interesting.
+      </p>
+
+      <p>
+        It’s not meant to be a perfect representation of who I am. It’s just
+        a little record of what has caught my attention along the way.
+      </p>
+
+      <p>
+        If you happen to enjoy books, movies, anime, history, technology, or
+        the occasional philosophical rabbit hole, I’d be happy to have you
+        around. Maybe you’ll find something here that makes you curious
+        about something new.
+      </p>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
-  .page-bg {
-    position: absolute;
-    inset: 0;
-    background: url('/images/great-wave.png') right -8vw center / min(56vw, 640px) auto no-repeat;
-    opacity: 0.16;
-    pointer-events: none;
-  }
-
-  @media (max-width: 900px) {
-    .page-bg {
-      background-position: right -30vw center;
-      background-size: 90vw auto;
-      opacity: 0.12;
-    }
-  }
-
   .hero {
-    position: relative;
-    padding-block: var(--space-8);
+    padding-block: var(--space-7) var(--space-8);
   }
 
   .name {
     font-size: clamp(2.5rem, 6.5vw, 4rem);
-    margin: var(--space-2) 0 var(--space-2);
+    margin: 0 0 var(--space-2);
     letter-spacing: -0.005em;
     max-width: 18ch;
   }
@@ -73,6 +110,14 @@ import { SITE } from '../data/site';
     font-size: 1.08rem;
     line-height: 1.7;
     color: var(--color-fg-muted);
-    max-width: 46ch;
+    max-width: var(--content-max);
+  }
+
+  .intro p {
+    margin: 0 0 var(--space-4);
+  }
+
+  .intro p:last-child {
+    margin-bottom: 0;
   }
 </style>
