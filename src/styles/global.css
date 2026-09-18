@@ -16,7 +16,7 @@
   --color-fg: #f4f1ea;
   --color-fg-muted: color-mix(in srgb, var(--color-fg) 62%, var(--color-navy-deep));
   --color-fg-faint: color-mix(in srgb, var(--color-fg) 45%, var(--color-navy-deep));
-  --color-page-shell: color-mix(in srgb, var(--color-fg) 22%, var(--color-black));
+  --color-page-shell: color-mix(in srgb, var(--color-fg) 10%, var(--color-black));
   --color-accent: var(--color-ember);
   --color-accent-on: #1a0900;
   --color-focus-ring: var(--color-ember);
@@ -161,7 +161,13 @@ button {
 .wrap {
   max-width: var(--page-max);
   margin-inline: auto;
-  padding-inline: var(--space-4);
+  padding-inline: var(--space-6);
+}
+
+@media (max-width: 560px) {
+  .wrap {
+    padding-inline: var(--space-4);
+  }
 }
 
 .prose {
