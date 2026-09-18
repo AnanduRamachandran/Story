@@ -43,13 +43,26 @@ const ogImageURL = new URL(ogImage, Astro.site);
   </head>
   <body>
     <a class="skip-link plain" href="#main">Skip to content</a>
-    <Nav />
-    <main id="main">
-      <slot />
-    </main>
-    <Footer />
+    <div class="page-frame">
+      <Nav />
+      <main id="main">
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>
+
+<style>
+  .page-frame {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    background: var(--color-bg);
+  }
+</style>
 
 <style is:global>
   .skip-link {

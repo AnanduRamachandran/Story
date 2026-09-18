@@ -16,6 +16,7 @@
   --color-fg: #f4f1ea;
   --color-fg-muted: color-mix(in srgb, var(--color-fg) 62%, var(--color-navy-deep));
   --color-fg-faint: color-mix(in srgb, var(--color-fg) 45%, var(--color-navy-deep));
+  --color-page-shell: color-mix(in srgb, var(--color-fg) 22%, var(--color-black));
   --color-accent: var(--color-ember);
   --color-accent-on: #1a0900;
   --color-focus-ring: var(--color-ember);
@@ -69,11 +70,8 @@ html {
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
   margin: 0;
-  background: var(--color-bg);
+  background: var(--color-page-shell);
   color: var(--color-fg);
   font-family: var(--font-serif);
   font-size: 1.0625rem;
@@ -81,8 +79,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+@media (max-width: 560px) {
+  body {
+    background: var(--color-bg);
+  }
+}
+
 main {
   flex: 1 0 auto;
+  position: relative;
 }
 
 h1, h2, h3, h4 {
