@@ -1,22 +1,43 @@
+Personal site for Anandu Ramachandran — Astro, plain CSS, deployed to **corazonan.com** via GitHub Actions on every push to `main`. Live production, not a staging environment: a push is a deploy.
+
+See [README.md](README.md) for project structure and content-editing pointers. This file is the shorter, agent-facing list of things that aren't obvious from reading the code.
+
 ## Development
 
-When starting the dev server, use background mode:
+Start the dev server in background mode:
 
 ```
 astro dev --background
 ```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+Manage it with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
-## Documentation
+Before treating any visual change as done: run `npm run build` (catches type/content errors the dev server won't), then check the result in the browser at both desktop and mobile widths. This project has shipped real layout bugs before (a flex list whose marker fell onto its own line when text wrapped) that only showed up at narrow widths.
 
-Full documentation: https://docs.astro.build
+## Before pushing
 
-Consult these guides before working on related tasks:
+`main` deploys automatically — there is no staging step. Before `git push`:
 
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+1. `npm run build` succeeds locally.
+2. The change has been visually checked in the browser pane, not just assumed from the diff.
+3. Commit, then push. To confirm the live deploy, `gh run watch --repo AnanduRamachandran/Story --exit-status` after pushing. If `gh` isn't found, it's likely installed via Homebrew but not on a non-interactive shell's PATH — try the full path, `/opt/homebrew/bin/gh`.
+
+## Design system is locked
+
+- **One serif family** (Lora) for everything — headings, body, nav, labels. Hierarchy comes from weight/italic/size/color, not from adding another typeface. `JetBrains Mono` exists only for inline `<code>` in blog posts.
+- **Four-color palette**, fixed: `--color-black`, `--color-navy-deep`, `--color-navy`, `--color-ember` (defined in `src/styles/global.css`). Don't introduce new colors — remix these via `color-mix()` if you need a new tone.
+- Don't add a new typeface, a new accent color, or a component library without the user explicitly asking — this has been an explicit, repeated design direction across the project's history, not an oversight.
+
+## Generated image assets
+
+Everything in `public/images/` (`favicon.png`, `home-waves.png`, `nav-mark.png`, `og-cover.png`) is generated from hand-written SVG by `scripts/generate-images.mjs`, rasterized with `@resvg/resvg-js`. Never hand-edit the PNGs — edit the SVG-building code and regenerate:
+
+```sh
+node scripts/generate-images.mjs
+```
+
+**Known footgun:** this version of `@resvg/resvg-js` has no `fontBuffers` option — only `fontFiles` (local paths). Passing buffers is silently accepted and silently ignored; every generated image will render in resvg's generic fallback font with no error. This has already happened once in this project's history and went unnoticed for several commits. After touching font handling in that script, always visually verify the output (composite it over black and read it back — see the script's own comments for the pattern), don't just check that the command exited 0.
+
+## Content data lives in `src/data/`, not in components
+
+`site.ts`, `work.ts`, `bookshelf.ts`, `links.ts` — see README for the shape of each. Blog posts are Markdown files in `src/content/blog/`.

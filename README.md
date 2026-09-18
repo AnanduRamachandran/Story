@@ -2,23 +2,31 @@
 
 Anandu Ramachandran's personal site — [Astro](https://astro.build), plain CSS (no framework), Markdown-backed blog.
 
+Live at **[corazonan.com](https://corazonan.com)**, deployed from [github.com/AnanduRamachandran/Story](https://github.com/AnanduRamachandran/Story).
+
 ## Structure
 
 ```
 src/
-  content/blog/*.md      # blog posts (content collection, schema in content.config.ts)
-  data/site.ts            # name, tagline, nav
-  data/work.ts             # experience, achievements, education, skills (from resume)
-  data/bookshelf.ts        # reading list — plain array, edit directly
-  data/links.ts             # grouped external links (essays / blogs / videos / elsewhere)
-  layouts/BaseLayout.astro  # <head>, nav, footer, SEO/OG meta
-  components/               # Nav, Footer
-  pages/                     # one file per route
-  styles/global.css          # design tokens (colors, type, spacing) + base styles
+  content/blog/*.md         # blog posts (content collection, schema in content.config.ts)
+  data/site.ts               # name, identity tags, nav items
+  data/work.ts                 # experience — org / role / period / one summary paragraph each
+  data/bookshelf.ts             # reading list — plain array, edit directly
+  data/links.ts                  # grouped external links (essays / blogs / videos / elsewhere)
+  layouts/BaseLayout.astro       # <head>, nav, footer, SEO/OG meta
+  components/                     # Nav, Footer
+  pages/
+    index.astro                    # home — hero, wave medallion background
+    blogs/index.astro                # post listing
+    blogs/[id].astro                  # post template
+    bookshelf.astro                    # reading list + the Sagan quote header
+    work.astro                          # experience
+    links.astro                          # link sections
+  styles/global.css                     # design tokens (palette, type, spacing) + base styles — see AGENTS.md before changing
 scripts/
-  generate-images.mjs        # regenerates the self-drawn PNGs in public/images/
-  fonts/                     # local .ttf copies used only for image generation (OFL licensed)
-public/images/                # generated hero background, OG card, favicon
+  generate-images.mjs                    # regenerates every PNG in public/images/ — see AGENTS.md footgun note
+  fonts/                                   # local Lora .ttf files used only for image generation (OFL licensed)
+public/images/                              # favicon, home page wave medallion, nav mark, OG social card — all generated, none hand-drawn
 ```
 
 ## Adding a blog post
@@ -40,17 +48,19 @@ Omit `draft` (or set `draft: false`) to publish; `draft: true` hides it from the
 
 ## Editing content
 
-- **Bookshelf** — edit the `books` array in `src/data/bookshelf.ts`.
+- **Bookshelf** — edit the `books` array in `src/data/bookshelf.ts` (`status: 'reading' | 'read'` controls the dot color, no section headers). The Carl Sagan quote under the page title is hardcoded in `src/pages/bookshelf.astro`, not in the data file — edit it there if it ever needs to change.
 - **Links** — edit `linkSections` in `src/data/links.ts`.
-- **Work** — edit `src/data/work.ts` (pulled from your resume; update as things change).
+- **Work** — edit `experience` in `src/data/work.ts`. Each role is `{ title, period, summary }` — one compact paragraph, not a bullet list. There's no Achievements/Education/Skills section on the page anymore; don't re-add that data shape without being asked.
 
 ## Regenerating images
 
-`public/images/hero-field.png`, `og-cover.png`, and `favicon.png` are generated locally from hand-written SVG (no external image service) via [resvg](https://github.com/RazrFalcon/resvg), using the same brand fonts as the site. To tweak and regenerate:
+`public/images/*.png` are generated locally from hand-written SVG (no external image service) via [resvg](https://github.com/RazrFalcon/resvg), using the same Lora fonts as the site:
 
 ```sh
 node scripts/generate-images.mjs
 ```
+
+Read `AGENTS.md` before touching this script — there's a real footgun in how it loads fonts.
 
 ## Development
 
@@ -61,17 +71,15 @@ npm run build     # -> dist/
 npm run preview   # serve the production build locally
 ```
 
-## Deployment — GitHub Pages + custom domain
+## Deployment
 
-This repo ships a GitHub Actions workflow (`.github/workflows/deploy.yml`) that builds and deploys to GitHub Pages on every push to `main`.
+`.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `main` — no staging step, a push to `main` is a production deploy. Current setup:
 
-One-time setup, after pushing this repo to GitHub as `AnanduRamachandran/Story`:
+- **Pages source**: GitHub Actions (Settings → Pages → Build and deployment → Source).
+- **Custom domain**: `corazonan.com`, set both in `public/CNAME` and Settings → Pages → Custom domain. HTTPS cert is issued and enforced.
+- **DNS**: apex `A` records to GitHub Pages' four IPs (`185.199.108.153`, `.109.153`, `.110.153`, `.111.153`); `www` `CNAME` to `ananduramachandran.github.io`.
+- `astro.config.mjs`'s `site` field matches the live domain (used for canonical URLs and OG tags).
 
-1. **Repo → Settings → Pages → Build and deployment → Source**: select **GitHub Actions**.
-2. **Custom domain**: `public/CNAME` is set to `corazonan.com` — make sure the same value is set under **Settings → Pages → Custom domain**.
-3. **DNS**: point your domain at GitHub Pages —
-   - Apex domain (`example.com`): four `A` records to `185.199.108.153`, `.109.153`, `.110.153`, `.111.153`.
-   - `www` subdomain: a `CNAME` record to `ananduramachandran.github.io`.
-4. `astro.config.mjs`'s `site` field should match your final domain (used for canonical URLs, sitemaps, and OG tags).
+This domain previously pointed at a different repo (`journal`); it was moved here by clearing the domain there and setting it on `Story`'s Pages config via `gh api`. A GitHub custom domain can only be attached to one repo at a time per account.
 
-If you'd rather not use a custom domain yet, delete `public/CNAME` and the site will be reachable at `https://ananduramachandran.github.io/Story/` — in that case also add `base: '/Story'` to `astro.config.mjs`.
+If the custom domain is ever removed, the site falls back to `https://ananduramachandran.github.io/Story/` — in that case also add `base: '/Story'` to `astro.config.mjs`.
