@@ -1,6 +1,8 @@
-// Generates the site's PNG assets (hero background, OG card, favicon)
-// from hand-written SVG, rasterized locally with resvg — no external
-// image-gen service, no reliance on system-installed fonts.
+// Generates the site's SVG-based PNG assets (OG card, favicon, nav mark)
+// rasterized locally with resvg — no external image-gen service, no
+// reliance on system-installed fonts. The home page's background
+// (public/images/great-wave.png) is a supplied illustration, not
+// generated here — see the README for its provenance.
 import { Resvg } from '@resvg/resvg-js';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -56,102 +58,7 @@ function mulberry32(seed) {
 }
 
 // ============================================================
-// 1. Home background — a single line-art medallion evoking Hokusai's
-//    "The Great Wave off Kanagawa" (1831 — long public domain).
-//    An original abstracted line drawing of the composition's
-//    silhouette (the cresting wave and its claw-like foam), not a
-//    trace of the print itself, set inside a ring. One emblem, not
-//    a repeating pattern.
-// ============================================================
-function waveMedallionSvg() {
-  const S = 900;
-  const cx = 450;
-  const cy = 450;
-
-  // Smooth crest body — the claws are overlaid on top of this, not
-  // baked into the outline, so each hook can be shaped individually.
-  const crest = `M 120 560
-    C 130 460, 170 380, 250 330
-    C 300 300, 335 268, 355 230
-    C 395 195, 455 178, 515 195
-    C 550 206, 572 226, 570 250
-    C 548 266, 512 270, 486 254
-    C 494 292, 476 336, 440 372
-    C 396 416, 336 446, 274 462
-    C 226 474, 172 486, 120 560 Z`;
-
-  // One talon: an open hooked stroke from the crest edge up to a
-  // sharp curled tip — no closed loop, so it reads as a claw rather
-  // than a bubble. Placed and rotated per-instance along the crest.
-  const talon = (ax, ay, rot, scale) =>
-    `<path d="M 0 0 C 9 -7 17 -19 15 -29 C 14 -35 8 -37 2 -33"
-      transform="translate(${ax} ${ay}) rotate(${rot}) scale(${scale})"
-      stroke="${COLOR.navy}" stroke-width="${(2.4 / scale).toFixed(2)}" stroke-opacity="0.65"
-      fill="none" stroke-linecap="round" stroke-linejoin="round" />`;
-
-  const talons = [
-    talon(355, 228, -50, 1.15),
-    talon(392, 199, -25, 1.3),
-    talon(432, 182, -3, 1.35),
-    talon(474, 180, 18, 1.3),
-    talon(513, 194, 40, 1.2),
-    talon(548, 217, 60, 1.0),
-  ].join('\n    ');
-
-  // Thin contour lines inside the wave body, following the curl —
-  // Hokusai's surface striping, simplified.
-  const contours = [
-    `M 165 540 C 190 460, 235 400, 300 358 C 322 344, 340 328, 353 310`,
-    `M 205 520 C 235 450, 278 400, 335 366 C 352 356, 366 342, 377 326`,
-    `M 250 495 C 278 440, 316 400, 358 374`,
-  ];
-
-  // Smaller secondary swell, lower right, curling the opposite way.
-  const swell = `M 560 620
-    C 580 570, 620 540, 668 535
-    C 690 533, 705 522, 710 505
-    C 706 495, 696 492, 688 496
-    C 691 478, 708 474, 714 492
-    Z`;
-  const swellTalons = [talon(688, 500, 200, 0.7), talon(706, 490, 230, 0.6)].join('\n    ');
-  const swellContour = `M 585 608 C 602 574, 630 552, 664 544 C 682 540, 696 532, 702 518`;
-
-  // Foam spray — small dots scattered near the claws, one in accent.
-  const spray = [
-    [388, 172, false],
-    [420, 152, false],
-    [462, 148, false],
-    [500, 156, false],
-    [536, 178, true],
-    [330, 202, false],
-  ];
-
-  const strokeMain = `stroke="${COLOR.navy}" stroke-width="2.2" stroke-opacity="0.6" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
-  const strokeThin = `stroke="${COLOR.navy}" stroke-width="1.3" stroke-opacity="0.4" fill="none" stroke-linecap="round"`;
-
-  const contourPaths = contours.map((d) => `<path d="${d}" ${strokeThin} />`).join('\n    ');
-  const sprayDots = spray
-    .map(
-      ([x, y, accent]) =>
-        `<circle cx="${x}" cy="${y}" r="${accent ? 4.5 : 3}" fill="${accent ? COLOR.ember : COLOR.navy}" fill-opacity="${accent ? 0.75 : 0.5}" />`
-    )
-    .join('\n    ');
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
-    <circle cx="${cx}" cy="${cy}" r="410" fill="none" stroke="${COLOR.navy}" stroke-width="2" stroke-opacity="0.35" />
-    <circle cx="${cx}" cy="${cy}" r="392" fill="none" stroke="${COLOR.navy}" stroke-width="1" stroke-opacity="0.22" />
-    <path d="${crest}" ${strokeMain} />
-    ${talons}
-    ${contourPaths}
-    <path d="${swell}" ${strokeMain} />
-    ${swellTalons}
-    <path d="${swellContour}" ${strokeThin} />
-    ${sprayDots}
-  </svg>`;
-}
-
-// ============================================================
-// 2. OG social card — 1200x630
+// 1. OG social card — 1200x630
 // ============================================================
 function ogSvg() {
   const W = 1200;
@@ -177,7 +84,7 @@ function ogSvg() {
 }
 
 // ============================================================
-// 3. Favicon — 512x512 monogram
+// 2. Favicon — 512x512 monogram
 // ============================================================
 function faviconSvg() {
   const S = 512;
@@ -190,10 +97,9 @@ function faviconSvg() {
 }
 
 // ============================================================
-// 4. Nav mark — an outline home glyph inside a thin orbit ring,
+// 3. Nav mark — an outline home glyph inside a thin orbit ring,
 //    since the mark now links back to "/". Open stroked lines, not
-//    filled shapes, matching the line-art language used everywhere
-//    else on the site (the wave medallion, the ring itself) — just
+//    filled shapes, matching the site's line-art language — just
 //    one filled ember accent for the door.
 // ============================================================
 function navMarkSvg() {
@@ -209,7 +115,6 @@ function navMarkSvg() {
   </svg>`;
 }
 
-render(waveMedallionSvg(), { width: 1400 }, 'home-waves.png');
 render(ogSvg(), { width: 1200 }, 'og-cover.png');
 render(faviconSvg(), { width: 512 }, 'favicon.png');
 render(navMarkSvg(), { width: 240 }, 'nav-mark.png');
