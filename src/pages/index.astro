@@ -59,11 +59,13 @@ import { SITE } from '../data/site';
 <style>
   .hero {
     padding-block: var(--space-7) var(--space-8);
+    text-align: center;
   }
 
   .name {
     font-size: clamp(2.5rem, 6.5vw, 4rem);
     margin: 0 0 var(--space-2);
+    margin-inline: auto;
     letter-spacing: -0.005em;
     max-width: 18ch;
   }
@@ -79,7 +81,9 @@ import { SITE } from '../data/site';
     font-size: clamp(1.6rem, 3.4vw, 2.4rem);
     line-height: 1.35;
     margin: 0 0 var(--space-5);
+    margin-inline: auto;
     max-width: 26ch;
+    text-align: justify;
     text-wrap: balance;
   }
 
@@ -88,6 +92,8 @@ import { SITE } from '../data/site';
     line-height: 1.7;
     color: var(--color-fg-muted);
     max-width: var(--content-max);
+    margin-inline: auto;
+    text-align: left;
   }
 
   .intro p {
