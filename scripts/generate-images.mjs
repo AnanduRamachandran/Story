@@ -84,16 +84,18 @@ function ogSvg() {
 }
 
 // ============================================================
-// 2. Favicon — 512x512 wave-curl glyph. Transparent canvas, a
-//    single open stroke (no fills, no letters) echoing the
-//    Hokusai wave on the home page — legible as a small accent
-//    mark rather than a monogram.
+// 2. Favicon — an open book traced as a heart outline (the
+//    two page-lobes double as the heart's lobes, the center
+//    spine line reads as the book's gutter). Transparent
+//    canvas, open strokes only — no fills, no letters.
 // ============================================================
 function faviconSvg() {
-  const S = 512;
+  const S = 100;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">
-    <path d="M 92 328 C 138 208 292 152 384 224 C 452 276 420 372 328 366 C 274 362 254 322 284 296"
-      fill="none" stroke="${COLOR.ember}" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M50,86 C20,64 8,42 8,26 C8,12 20,2 34,2 C44,2 50,10 50,18 C50,10 56,2 66,2 C80,2 92,12 92,26 C92,42 80,64 50,86 Z"
+      fill="none" stroke="${COLOR.ember}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M50,19 L50,77"
+      fill="none" stroke="${COLOR.ember}" stroke-width="5" stroke-linecap="round" />
   </svg>`;
 }
 

@@ -10,26 +10,6 @@ export type Book = {
 
 export const books: Book[] = [
   {
-    title: 'Mother Mary Comes to Me',
-    author: 'Arundhati Roy',
-    status: 'reading',
-  },
-  {
-    title: 'The Ivory Throne: Chronicles of the House of Travancore',
-    author: 'Manu S. Pillai',
-    status: 'reading',
-  },
-  {
-    title: 'The Seven Moons of Maali Almeida',
-    author: 'Shehan Karunatilaka',
-    status: 'reading',
-  },
-  {
-    title: 'മഞ്ഞ്',
-    author: 'M.T. Vasudevan Nair',
-    status: 'reading',
-  },
-  {
     title: 'The Alchemist',
     author: 'Paulo Coelho',
     status: 'read',
